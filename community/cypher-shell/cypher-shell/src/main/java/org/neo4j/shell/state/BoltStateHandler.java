@@ -692,7 +692,12 @@ public class BoltStateHandler implements TransactionHandler, Connector, Database
             default -> {}
             // Do nothing
         }
-        return driverProvider.apply(connectionConfig.uri(), authToken, configBuilder.build());
+        Config config = configBuilder.build();
+        return connectionConfig
+                .clientCertificate()
+                .map(clientCertificate -> GraphDatabase.driver(
+                        connectionConfig.uri(), authToken, clientCertificate.toClientCertificateManager(), config))
+                .orElseGet(() -> driverProvider.apply(connectionConfig.uri(), authToken, config));
     }
 
     private boolean isSystemDb() {
