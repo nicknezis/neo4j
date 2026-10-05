@@ -72,4 +72,15 @@ public record ConnectionConfig(
                 Optional.ofNullable(impersonatedUser),
                 clientCertificate);
     }
+
+    public ConnectionConfig withClientCertificate(ClientCertificateConfig clientCertificate) {
+        return new ConnectionConfig(
+                uri,
+                username,
+                password,
+                encryption,
+                database,
+                impersonatedUser,
+                Optional.ofNullable(clientCertificate));
+    }
 }
